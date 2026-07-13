@@ -1,49 +1,32 @@
-import type {
-  Difficulty,
-  Pattern,
-  Platform,
-  Status,
-  Topic,
-} from "../constants";
-import type { Course } from "../constants/courses";
+import type { Platform, Status } from "@/constants";
+import type { ProblemTemplate } from "./problemTemplate";
 
-export interface Problem {
-  // Identity
+export interface Problem extends ProblemTemplate {
   id: string;
-  title: string;
 
-  // Source
   platform: Platform;
-  course: Course;
 
-  // Classification
-  topic: Topic;
-  pattern: Pattern;
-  difficulty: Difficulty;
-
-  // Progress
   status: Status;
-  completed: boolean;
+
   confidence: 1 | 2 | 3 | 4 | 5;
 
-  // Solving
+  completed: boolean;
+
   attempts: number;
-  timeSpent?: number; // minutes
+
   usedHint: boolean;
 
-  // Complexity
-  timeComplexity?: string;
-  spaceComplexity?: string;
-
-  // Resources
-  solutionUrl?: string;
   notes: string;
 
-  // Review
-  lastReviewed?: string;
-  nextReview?: string;
+  solutionUrl?: string;
 
-  // Metadata
+  timeSpent?: number;
+
   createdAt: string;
+
   updatedAt: string;
+
+  lastReviewed?: string;
+
+  nextReview?: string;
 }

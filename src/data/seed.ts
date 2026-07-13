@@ -1,47 +1,37 @@
-export const seedProblems = [
-  {
-    id: crypto.randomUUID(),
-    title: "Contains Duplicate",
-    platform: "LeetCode",
-    course: "Interview Crash Course",
-    topic: "Arrays & Strings",
-    pattern: "Hash Set",
-    difficulty: "Easy",
-    status: "🟢",
-    confidence: 5,
-    completed: true,
-    attempts: 1,
-    usedHint: false,
-    notes: "Use a Set for O(1) lookups.",
-  },
-  {
-    id: crypto.randomUUID(),
-    title: "Two Sum",
-    platform: "LeetCode",
-    course: "Interview Crash Course",
-    topic: "Arrays & Strings",
-    pattern: "Hash Map",
-    difficulty: "Easy",
-    status: "🟡",
-    confidence: 3,
-    completed: true,
-    attempts: 2,
-    usedHint: true,
-    notes: "Store complements in a Map.",
-  },
-  {
-    id: crypto.randomUUID(),
-    title: "Maximum Average Subarray I",
-    platform: "LeetCode",
-    course: "Interview Crash Course",
-    topic: "Sliding Window",
-    pattern: "Sliding Window",
-    difficulty: "Easy",
-    status: "🔴",
-    confidence: 1,
-    completed: false,
-    attempts: 1,
-    usedHint: false,
-    notes: "",
-  }
-];
+import {
+  arraysStrings,
+  hashing,
+  twoPointers,
+} from "./interviewCrashCourse";
+
+import { PLATFORMS, STATUS } from "@/constants";
+
+import type { Problem } from "@/types/problem";
+
+export const seedProblems: Problem[] = [
+  ...arraysStrings,
+  ...hashing,
+  ...twoPointers,
+].map(problem => ({
+  id: crypto.randomUUID(),
+
+  ...problem,
+
+  platform: PLATFORMS.LEETCODE,
+
+  status: STATUS.NOT_STARTED,
+
+  confidence: 1,
+
+  completed: false,
+
+  attempts: 0,
+
+  usedHint: false,
+
+  notes: "",
+
+  createdAt: new Date().toISOString(),
+
+  updatedAt: new Date().toISOString(),
+}));
