@@ -22,6 +22,7 @@ export const PATTERNS = {
   STRING_ENCODING: "String Encoding",
   STRING: "String",
   BOYER_MOORE: "Boyer-Moore Voting",
+  MATH: "Math",
 } as const;
 
 export type Pattern =
