@@ -4,45 +4,25 @@ import { useProblemStore } from "@/store/problemStore";
 
 const ReviewPage = () => {
   const problems = useProblemStore((state) => state.problems);
-  const updateStatus = useProblemStore((state) => state.updateStatus);
+  const completeReview = useProblemStore((state) => state.completeReview);
   const today = new Date().toISOString().slice(0, 10);
-  const reviewQueue = problems.filter((problem) =>
-    problem.status === STATUS.REVIEW || Boolean(problem.nextReview && problem.nextReview.slice(0, 10) <= today),
-  );
+  const due = problems.filter((problem) => problem.status === STATUS.REVIEW || Boolean(problem.nextReview && problem.nextReview.slice(0, 10) <= today));
+  const forgotten = problems.filter((problem) => problem.status === STATUS.STUCK || problem.confidence <= 2).slice(0, 6);
+  const upcoming = problems.filter((problem) => problem.nextReview && problem.nextReview.slice(0, 10) > today).sort((left, right) => (left.nextReview ?? "").localeCompare(right.nextReview ?? "")).slice(0, 5);
 
-  return (
-    <div className="space-y-6">
-      <h1 className="text-4xl font-bold">
-        🧠 Review
-      </h1>
+  return <div className="space-y-6">
+    <div><h1 className="text-4xl font-bold">🧠 Review</h1><p className="mt-2 text-slate-400">Spaced repetition moves successful reviews through 1, 3, 7, 14, and 30-day intervals.</p></div>
 
-      <p className="text-slate-400">
-        Spaced repetition review queue.
-      </p>
+    <section className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+      <div className="flex items-baseline justify-between"><h2 className="text-xl font-semibold text-white">Today's queue</h2><span className="text-sm text-sky-400">{due.length} due</span></div>
+      {due.length === 0 ? <div className="py-8 text-center"><p className="text-slate-400">Your review queue is clear.</p><Link to="/problems" className="mt-4 inline-flex rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white">Choose a problem</Link></div> : <div className="mt-4 divide-y divide-slate-800">{due.map((problem) => <div key={problem.id} className="flex flex-wrap items-center justify-between gap-4 py-4"><div><p className="font-semibold text-white">{problem.title}</p><p className="text-sm text-slate-400">{problem.topic.label} · Confidence {problem.confidence}/5</p></div><button type="button" onClick={() => completeReview(problem.id)} className="rounded-lg border border-emerald-500/50 px-4 py-2 text-sm font-medium text-emerald-400 hover:bg-emerald-500/10">Review +10 XP</button></div>)}</div>}
+    </section>
 
-      {reviewQueue.length === 0 ? (
-        <div className="rounded-xl border border-slate-800 bg-slate-900 p-10 text-center">
-          <p className="text-lg font-medium text-white">Your review queue is clear.</p>
-          <p className="mt-2 text-slate-400">Mark a problem as “Needs Review” from the Problems page to add it here.</p>
-          <Link to="/problems" className="mt-6 inline-flex rounded-lg bg-sky-500 px-5 py-2 font-medium text-white hover:bg-sky-600">Browse problems</Link>
-        </div>
-      ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
-          {reviewQueue.map((problem) => (
-            <div key={problem.id} className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 p-5 last:border-0">
-              <div>
-                <p className="font-semibold text-white">{problem.title}</p>
-                <p className="mt-1 text-sm text-slate-400">{problem.topic.label} · Confidence {problem.confidence}/5</p>
-              </div>
-              <button type="button" onClick={() => updateStatus(problem.id, STATUS.SOLVED)} className="rounded-lg border border-emerald-500/50 px-4 py-2 text-sm font-medium text-emerald-400 hover:bg-emerald-500/10">
-                Mark reviewed
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="grid gap-6 lg:grid-cols-2">
+      <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-semibold text-white">Next reviews</h2><div className="mt-4 space-y-3">{upcoming.length ? upcoming.map((problem) => <div key={problem.id} className="flex justify-between gap-3 text-sm"><span>{problem.title}</span><span className="text-slate-400">{new Date(problem.nextReview!).toLocaleDateString()}</span></div>) : <p className="text-sm text-slate-400">Complete a review to schedule the next one.</p>}</div></section>
+      <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-semibold text-white">Forgotten problems</h2><div className="mt-4 space-y-3">{forgotten.length ? forgotten.map((problem) => <div key={problem.id} className="flex justify-between gap-3 text-sm"><span>{problem.title}</span><span className="text-amber-400">{problem.confidence}/5 confidence</span></div>) : <p className="text-sm text-slate-400">No weak spots flagged yet.</p>}</div></section>
     </div>
-  );
+  </div>;
 };
 
 export default ReviewPage;
