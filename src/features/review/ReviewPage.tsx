@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { STATUS } from "@/constants";
 import { useProblemStore } from "@/store/problemStore";
 
 const ReviewPage = () => {
   const problems = useProblemStore((state) => state.problems);
-  const completeReview = useProblemStore((state) => state.completeReview);
+  const selectProblem = useProblemStore((state) => state.selectProblem);
+  const navigate = useNavigate();
   const today = new Date().toISOString().slice(0, 10);
   const due = problems.filter((problem) => problem.status === STATUS.REVIEW || Boolean(problem.nextReview && problem.nextReview.slice(0, 10) <= today));
   const forgotten = problems.filter((problem) => problem.status === STATUS.STUCK || problem.confidence <= 2).slice(0, 6);
@@ -15,7 +16,7 @@ const ReviewPage = () => {
 
     <section className="rounded-xl border border-slate-800 bg-slate-900 p-6">
       <div className="flex items-baseline justify-between"><h2 className="text-xl font-semibold text-white">Today's queue</h2><span className="text-sm text-sky-400">{due.length} due</span></div>
-      {due.length === 0 ? <div className="py-8 text-center"><p className="text-slate-400">Your review queue is clear.</p><Link to="/problems" className="mt-4 inline-flex rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white">Choose a problem</Link></div> : <div className="mt-4 divide-y divide-slate-800">{due.map((problem) => <div key={problem.id} className="flex flex-wrap items-center justify-between gap-4 py-4"><div><p className="font-semibold text-white">{problem.title}</p><p className="text-sm text-slate-400">{problem.topic.label} · Confidence {problem.confidence}/5</p></div><button type="button" onClick={() => completeReview(problem.id)} className="rounded-lg border border-emerald-500/50 px-4 py-2 text-sm font-medium text-emerald-400 hover:bg-emerald-500/10">Review +10 XP</button></div>)}</div>}
+      {due.length === 0 ? <div className="py-8 text-center"><p className="text-slate-400">Your review queue is clear.</p><Link to="/problems" className="mt-4 inline-flex rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white">Choose a problem</Link></div> : <div className="mt-4 divide-y divide-slate-800">{due.map((problem) => <div key={problem.id} className="flex flex-wrap items-center justify-between gap-4 py-4"><div><p className="font-semibold text-white">{problem.title}</p><p className="text-sm text-slate-400">{problem.topic.label} · Confidence {problem.confidence}/5</p></div><button type="button" onClick={() => { selectProblem(problem.id); navigate("/problems"); }} className="rounded-lg border border-sky-500/50 px-4 py-2 text-sm font-medium text-sky-400 hover:bg-sky-500/10">Review problem</button></div>)}</div>}
     </section>
 
     <div className="grid gap-6 lg:grid-cols-2">
