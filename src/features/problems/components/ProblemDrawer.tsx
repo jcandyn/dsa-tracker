@@ -1,4 +1,5 @@
 import { useProblemStore } from "@/store/problemStore";
+import { STATUS } from "@/constants";
 
 import HintPanel from "./HintPanel";
 import ConfidenceStars from "./ConfidenceStars";
@@ -24,6 +25,10 @@ const ProblemDrawer = () => {
 
   const updateNotes = useProblemStore(
     (state) => state.updateNotes
+  );
+
+  const completeReview = useProblemStore(
+    (state) => state.completeReview
   );
 
   const problem = problems.find(
@@ -159,6 +164,16 @@ const ProblemDrawer = () => {
         {/* Footer */}
 
         <div className="border-t border-slate-800 p-6">
+
+          {problem.status === STATUS.REVIEW && (
+            <button
+              type="button"
+              onClick={() => completeReview(problem.id)}
+              className="mb-3 flex w-full items-center justify-center rounded-xl border border-emerald-500/50 px-4 py-3 font-semibold text-emerald-400 transition hover:bg-emerald-500/10"
+            >
+              Complete review +10 XP
+            </button>
+          )}
 
           <a
             href={problem.url}
