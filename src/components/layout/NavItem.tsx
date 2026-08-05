@@ -16,8 +16,8 @@ const NavItem = ({ to, icon: Icon, children }: NavItemProps) => {
         clsx(
           "flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200",
           isActive
-            ? "bg-sky-500 text-white shadow"
-            : "text-slate-400 hover:bg-slate-800 hover:text-white"
+            ? "bg-sky-500 text-slate-950 dark:text-white shadow"
+            : "text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
         )
       }
     >
