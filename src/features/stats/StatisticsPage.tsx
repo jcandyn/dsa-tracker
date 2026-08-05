@@ -1,20 +1,37 @@
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { DIFFICULTY, STATUS } from "@/constants";
+import { useProblemStore } from "@/store/problemStore";
+
+const COLORS = ["#38bdf8", "#a78bfa", "#34d399"];
+const dayKey = (date: Date) => date.toISOString().slice(0, 10);
+
 const StatisticsPage = () => {
-  return (
-    <div className="space-y-6">
-      <h1 className="text-4xl font-bold">
-        📈 Statistics
-      </h1>
+  const problems = useProblemStore((state) => state.problems);
+  const activity = useProblemStore((state) => state.activity);
+  const difficultyData = Object.values(DIFFICULTY).map((difficulty) => ({ name: difficulty, value: problems.filter((problem) => problem.difficulty === difficulty).length }));
+  const topicData = Object.values(problems.reduce<Record<string, { name: string; solved: number; total: number }>>((groups, problem) => {
+    const key = problem.topic.id;
+    groups[key] ??= { name: problem.topic.label, solved: 0, total: 0 };
+    groups[key].total += 1;
+    if (problem.status === STATUS.SOLVED || problem.completed) groups[key].solved += 1;
+    return groups;
+  }, {})).map((topic) => ({ ...topic, mastery: Math.round((topic.solved / topic.total) * 100) })).sort((left, right) => right.mastery - left.mastery);
+  const weeklyData = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(); date.setDate(date.getDate() - (6 - index));
+    const dateKey = dayKey(date);
+    return { day: date.toLocaleDateString(undefined, { weekday: "short" }), xp: activity.filter((item) => item.date.slice(0, 10) === dateKey).reduce((sum, item) => sum + item.xp, 0) };
+  });
+  const heatmap = Array.from({ length: 35 }, (_, index) => { const date = new Date(); date.setDate(date.getDate() - (34 - index)); const key = dayKey(date); return { key, label: date.toLocaleDateString(undefined, { month: "short", day: "numeric" }), count: activity.filter((item) => item.date.slice(0, 10) === key).length }; });
 
-      <p className="text-slate-400">
-        Your coding progress will appear here.
-      </p>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="h-64 rounded-xl border border-slate-800 bg-slate-900" />
-        <div className="h-64 rounded-xl border border-slate-800 bg-slate-900" />
-      </div>
+  return <div className="space-y-6">
+    <div><h1 className="text-4xl font-bold">📈 Statistics</h1><p className="mt-2 text-slate-400">Progress, consistency, and strengths across your interview prep.</p></div>
+    <div className="grid gap-6 lg:grid-cols-2">
+      <section className="h-80 rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="font-semibold text-white">Difficulty distribution</h2><ResponsiveContainer width="100%" height="90%"><PieChart><Pie data={difficultyData} dataKey="value" nameKey="name" outerRadius={90} label>{difficultyData.map((item, index) => <Cell key={item.name} fill={COLORS[index]} />)}</Pie><Tooltip /></PieChart></ResponsiveContainer></section>
+      <section className="h-80 rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="font-semibold text-white">Weekly progress</h2><ResponsiveContainer width="100%" height="90%"><BarChart data={weeklyData}><CartesianGrid strokeDasharray="3 3" stroke="#334155" /><XAxis dataKey="day" /><YAxis /><Tooltip /><Bar dataKey="xp" fill="#38bdf8" radius={[6, 6, 0, 0]} /></BarChart></ResponsiveContainer></section>
     </div>
-  );
+    <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="font-semibold text-white">Study heatmap</h2><p className="mt-1 text-sm text-slate-400">Your last 35 days of activity.</p><div className="mt-5 grid grid-cols-7 gap-2">{heatmap.map((day) => <div key={day.key} title={`${day.label}: ${day.count} activities`} className={`aspect-square rounded-md ${day.count === 0 ? "bg-slate-800" : day.count === 1 ? "bg-emerald-800" : day.count === 2 ? "bg-emerald-600" : "bg-emerald-400"}`} />)}</div></section>
+    <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="font-semibold text-white">Topic mastery</h2><div className="mt-5 grid gap-4 md:grid-cols-2">{topicData.map((topic) => <div key={topic.name}><div className="mb-1 flex justify-between text-sm"><span>{topic.name}</span><span className="text-slate-400">{topic.mastery}% · {topic.solved}/{topic.total}</span></div><div className="h-2 overflow-hidden rounded-full bg-slate-800"><div className="h-full rounded-full bg-violet-500" style={{ width: `${topic.mastery}%` }} /></div></div>)}</div></section>
+  </div>;
 };
 
 export default StatisticsPage;
