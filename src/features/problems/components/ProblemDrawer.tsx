@@ -5,6 +5,7 @@ import HintPanel from "./HintPanel";
 import ConfidenceStars from "./ConfidenceStars";
 import DifficultyBadge from "./DifficultyBadge";
 import StatusBadge from "./StatusBadge";
+import NotesEditor from "./NotesEditor";
 
 const ProblemDrawer = () => {
   const selectedProblemId = useProblemStore(
@@ -23,10 +24,6 @@ const ProblemDrawer = () => {
     (state) => state.updateConfidence
   );
 
-  const updateNotes = useProblemStore(
-    (state) => state.updateNotes
-  );
-
   const completeReview = useProblemStore(
     (state) => state.completeReview
   );
@@ -41,10 +38,10 @@ const ProblemDrawer = () => {
     <>
       <div
         onClick={() => selectProblem(null)}
-        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 z-40 bg-black/40"
       />
 
-      <aside className="fixed right-0 top-0 z-50 flex h-screen w-[460px] flex-col border-l border-slate-800 bg-slate-950 shadow-2xl">
+      <aside className="fixed right-0 top-0 z-50 flex h-screen w-[460px] transform-gpu flex-col border-l border-slate-800 bg-slate-950 shadow-2xl [contain:layout_paint]">
 
         {/* Header */}
 
@@ -88,7 +85,7 @@ const ProblemDrawer = () => {
 
         {/* Body */}
 
-        <div className="flex-1 space-y-8 overflow-y-auto p-6">
+        <div className="flex-1 space-y-8 overflow-y-auto overscroll-contain p-6 [scrollbar-gutter:stable] [will-change:scroll-position]">
 
           {/* Confidence */}
 
@@ -150,12 +147,7 @@ const ProblemDrawer = () => {
               Notes
             </h3>
 
-            <textarea
-              placeholder="Write your thoughts, solution ideas, common mistakes..."
-              className="h-40 w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-sky-500"
-              value={problem.notes}
-              onChange={(event) => updateNotes(problem.id, event.target.value)}
-            />
+            <NotesEditor problemId={problem.id} notes={problem.notes} />
 
           </section>
 
