@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 import { seedProblems } from "@/data/seed";
 
@@ -38,7 +39,7 @@ interface ProblemStore {
   toggleCompleted: (id: string) => void;
 }
 
-export const useProblemStore = create<ProblemStore>((set) => ({
+export const useProblemStore = create<ProblemStore>()(persist((set) => ({
   revealedHints: {},
 
   problems: seedProblems,
@@ -119,4 +120,7 @@ export const useProblemStore = create<ProblemStore>((set) => ({
           : problem
       ),
     })),
+}), {
+  name: "dsa-tracker-problems",
+  partialize: (state) => ({ problems: state.problems }),
 }));

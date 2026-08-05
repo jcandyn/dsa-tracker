@@ -22,6 +22,10 @@ const ProblemDrawer = () => {
     (state) => state.updateConfidence
   );
 
+  const updateNotes = useProblemStore(
+    (state) => state.updateNotes
+  );
+
   const problem = problems.find(
     (p) => p.id === selectedProblemId
   );
@@ -144,7 +148,8 @@ const ProblemDrawer = () => {
             <textarea
               placeholder="Write your thoughts, solution ideas, common mistakes..."
               className="h-40 w-full rounded-xl border border-slate-800 bg-slate-900 p-4 outline-none focus:border-sky-500"
-              defaultValue={problem.notes}
+              value={problem.notes}
+              onChange={(event) => updateNotes(problem.id, event.target.value)}
             />
 
           </section>
