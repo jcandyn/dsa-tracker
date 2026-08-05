@@ -39,6 +39,8 @@ interface ProblemStore {
 }
 
 export const useProblemStore = create<ProblemStore>((set) => ({
+  revealedHints: {},
+
   problems: seedProblems,
 
   selectedProblemId: null,
