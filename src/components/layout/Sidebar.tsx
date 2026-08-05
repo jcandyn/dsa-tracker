@@ -11,7 +11,7 @@ import NavItem from "./NavItem";
 
 const Sidebar = () => {
   return (
-    <aside className="flex h-screen w-64 flex-col border-r border-slate-800 bg-slate-950">
+    <aside className="flex h-screen w-64 flex-col border-r border-border bg-sidebar text-sidebar-foreground">
       <div className="border-b border-slate-800 p-6">
         <h1 className="text-2xl font-bold text-white">
           DSA Tracker

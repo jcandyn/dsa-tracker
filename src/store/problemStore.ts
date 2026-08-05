@@ -123,4 +123,17 @@ export const useProblemStore = create<ProblemStore>()(persist((set) => ({
 }), {
   name: "dsa-tracker-problems",
   partialize: (state) => ({ problems: state.problems }),
+  merge: (persistedState, currentState) => {
+    const persisted = persistedState as Partial<ProblemStore>;
+    const savedProblems = new Map((persisted.problems ?? []).map((problem) => [problem.slug, problem]));
+
+    return {
+      ...currentState,
+      ...persisted,
+      problems: currentState.problems.map((problem) => ({
+        ...problem,
+        ...savedProblems.get(problem.slug),
+      })),
+    };
+  },
 }));
