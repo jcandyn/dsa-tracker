@@ -20,7 +20,7 @@ const ProblemRow = ({ problem }: Props) => {
     );
   return (
     <tr
-        className="group border-b border-slate-800 transition-colors hover:bg-slate-900"
+        className="group border-b border-slate-800 transition-colors hover:bg-slate-100 dark:hover:bg-slate-900"
         >
       <td className="p-4">
         <StatusBadge
