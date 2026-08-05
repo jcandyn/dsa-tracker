@@ -2,6 +2,18 @@ import {
   arraysStrings,
   hashing,
   twoPointers,
+  slidingWindow,
+  linkedLists,
+  stacksQueues,
+  trees,
+  graphs,
+  heaps,
+  intervals,
+  binarySearch,
+  dynamicProgramming,
+  backtracking,
+  greedy,
+  math,
 } from "./interviewCrashCourse";
 
 import { PLATFORMS, STATUS } from "@/constants";
@@ -12,6 +24,18 @@ export const seedProblems: Problem[] = [
   ...arraysStrings,
   ...hashing,
   ...twoPointers,
+  ...slidingWindow,
+  ...linkedLists,
+  ...stacksQueues,
+  ...trees,
+  ...graphs,
+  ...heaps,
+  ...intervals,
+  ...binarySearch,
+  ...dynamicProgramming,
+  ...backtracking,
+  ...greedy,
+  ...math,
 ].map(problem => ({
   id: crypto.randomUUID(),
 

@@ -17,6 +17,12 @@ export const PATTERNS = {
   MONOTONIC_STACK: "Monotonic Stack",
   SORTING: "Sorting",
   HEAP: "Heap",
+  BUCKET_SORT: "Bucket Sort",
+  PREFIX_SUFFIX: "Prefix & Suffix",
+  STRING_ENCODING: "String Encoding",
+  STRING: "String",
+  BOYER_MOORE: "Boyer-Moore Voting",
+  MATH: "Math",
 } as const;
 
 export type Pattern =

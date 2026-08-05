@@ -1,3 +1,5 @@
+import type { Difficulty, Pattern, Topic } from "@/constants";
+
 export interface ProblemTemplate {
   title: string;
 

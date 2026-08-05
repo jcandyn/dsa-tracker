@@ -1,6 +1,7 @@
 import { DIFFICULTY } from "../../constants/difficulty";
 import { PATTERNS } from "../../constants/patterns";
 import { TOPICS } from "../../constants/topics";
+import type { ProblemTemplate } from "@/types/problemTemplate";
 
 export const arraysStrings: ProblemTemplate[] = [
   {

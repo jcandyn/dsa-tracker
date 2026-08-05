@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useProblemStore } from "@/store/problemStore";
 
 import HintPanel from "./HintPanel";
@@ -8,8 +6,6 @@ import DifficultyBadge from "./DifficultyBadge";
 import StatusBadge from "./StatusBadge";
 
 const ProblemDrawer = () => {
-  const [revealedHints, setRevealedHints] = useState(0);
-
   const selectedProblemId = useProblemStore(
     (state) => state.selectedProblemId
   );

@@ -17,6 +17,12 @@ export const TOPICS = {
     icon: "👉👈",
     color: "cyan",
   },
+  BINARY_SEARCH: {
+    id: "binary-search",
+    label: "Binary Search",
+    icon: "🔎",
+    color: "blue",
+  },
   SLIDING_WINDOW: {
     id: "sliding-window",
     label: "Sliding Window",
@@ -88,6 +94,12 @@ export const TOPICS = {
     label: "Greedy",
     icon: "💰",
     color: "red",
+  },
+  MATH: {
+    id: "math",
+    label: "Math",
+    icon: "➗",
+    color: "fuchsia",
   },
   INTERVALS: {
     id: "intervals",
