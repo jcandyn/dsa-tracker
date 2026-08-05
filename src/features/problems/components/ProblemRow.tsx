@@ -20,8 +20,7 @@ const ProblemRow = ({ problem }: Props) => {
     );
   return (
     <tr
-        onClick={() => selectProblem(problem.id)}
-        className="group cursor-pointer border-b border-slate-800 transition-colors hover:bg-slate-900"
+        className="group border-b border-slate-800 transition-colors hover:bg-slate-900"
         >
       <td className="p-4">
         <StatusBadge
@@ -31,9 +30,13 @@ const ProblemRow = ({ problem }: Props) => {
       </td>
 
     <td className="p-4">
-        <span className="font-medium text-white transition-colors group-hover:text-slate-200">
+        <button
+          type="button"
+          onClick={() => selectProblem(problem.id)}
+          className="cursor-pointer font-medium text-white transition-colors hover:text-sky-300 group-hover:text-slate-200"
+        >
             {problem.title}
-        </span>
+        </button>
     </td>
 
       <td className="p-4">
