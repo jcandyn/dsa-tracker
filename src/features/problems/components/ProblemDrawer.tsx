@@ -7,6 +7,7 @@ import DifficultyBadge from "./DifficultyBadge";
 import StatusBadge from "./StatusBadge";
 import NotesEditor from "./NotesEditor";
 import LearningPanel from "./LearningPanel";
+import LearningResources from "./LearningResources";
 
 const ProblemDrawer = () => {
   const selectedProblemId = useProblemStore(
@@ -109,6 +110,8 @@ const ProblemDrawer = () => {
           </section>
 
           <LearningPanel topicId={problem.topic.id} topicLabel={problem.topic.label} />
+
+          <LearningResources title={problem.title} url={problem.url} />
 
           {/* Hints */}
 
