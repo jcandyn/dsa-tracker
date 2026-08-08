@@ -1,12 +1,14 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useProblemStore } from "@/store/problemStore";
+import { useSettingsStore } from "@/store/settingsStore";
 
 import FilterBar from "./FilterBar";
 import ProblemRow from "./ProblemRow";
 
 const ProblemTable = () => {
   const problems = useProblemStore((state) => state.problems);
+  const compactTable = useSettingsStore((state) => state.compactTable);
   const [searchParams] = useSearchParams();
   const [courseSet, setCourseSet] = useState("all");
   const [sort, setSort] = useState<"title" | "difficulty-asc" | "difficulty-desc">("title");
@@ -41,7 +43,7 @@ const ProblemTable = () => {
       {query && <p className="text-sm text-slate-400">Showing {filteredProblems.length} result{filteredProblems.length === 1 ? "" : "s"} for “{query}”.</p>}
 
       <div className="overflow-hidden rounded-xl border border-slate-800">
-        <table className="w-full">
+        <table className={`w-full ${compactTable ? "compact-problem-table" : ""}`}>
         <thead className="bg-slate-900">
           <tr>
             <th className="p-4 text-left">Status</th>

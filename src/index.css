@@ -136,3 +136,6 @@ html:not(.dark) .border-slate-700 { border-color: #cbd5e1; }
 html:not(.dark) .text-white { color: #0f172a; }
 html:not(.dark) .text-slate-400 { color: #475569; }
 html:not(.dark) .text-slate-300 { color: #334155; }
+
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+.compact-problem-table th, .compact-problem-table td { padding-top: 0.6rem; padding-bottom: 0.6rem; }

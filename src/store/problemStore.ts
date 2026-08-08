@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { seedProblems } from "@/data/seed";
-import { REVIEW_INTERVALS } from "@/constants/reviewIntervals";
+import { useSettingsStore } from "@/store/settingsStore";
 
 import type { Problem } from "@/types/problem";
 import type { Difficulty, Status } from "@/constants";
@@ -134,7 +134,7 @@ export const useProblemStore = create<ProblemStore>()(persist((set) => ({
   completeReview: (id) =>
     set((state) => {
       const now = new Date();
-      const intervals = Object.values(REVIEW_INTERVALS);
+      const intervals = useSettingsStore.getState().reviewIntervals;
       return {
         activity: [...state.activity, { date: now.toISOString(), type: "review" as const, xp: 10 }].slice(-365),
         problems: state.problems.map((problem) => {
