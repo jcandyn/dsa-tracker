@@ -8,6 +8,7 @@ import ReviewPage from "../features/review/ReviewPage";
 import StatisticsPage from "../features/stats/StatisticsPage";
 import BadgesPage from "../features/badges/BadgesPage";
 import SettingsPage from "../features/settings/SettingsPage";
+import InterviewGuidePage from "../features/guide/InterviewGuidePage";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "/settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "/guide",
+        element: <InterviewGuidePage />,
       },
     ],
   },
