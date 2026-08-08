@@ -35,7 +35,7 @@ const FilterBar = ({ value, onChange }: Props) => (
         id="course-set-filter"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="appearance-none rounded-lg border border-slate-700 bg-slate-900 py-2 pl-3 pr-12 text-sm text-white outline-none focus:border-sky-500"
+        className="appearance-none rounded-lg border border-slate-700 bg-slate-900 py-2 pl-3 pr-16 text-sm text-white outline-none focus:border-sky-500"
       >
         {COURSE_SET_FILTERS.map((filter) => (
           <option key={filter.id} value={filter.id}>
@@ -43,7 +43,7 @@ const FilterBar = ({ value, onChange }: Props) => (
           </option>
         ))}
       </select>
-      <ChevronDown aria-hidden size={16} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+      <ChevronDown aria-hidden size={16} className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-400" />
     </div>
   </div>
 );

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useProblemStore } from "@/store/problemStore";
 import ProblemDrawer from "./components/ProblemDrawer";
@@ -10,9 +10,18 @@ const ProblemsPage = () => {
   const selectProblem = useProblemStore((state) => state.selectProblem);
   const [searchParams] = useSearchParams();
   const problemToOpen = searchParams.get("open");
+  const openedFromUrl = useRef<string | null>(null);
 
   useEffect(() => {
-    if (problemToOpen && problemToOpen !== selectedProblemId && problems.some((problem) => problem.id === problemToOpen)) {
+    if (!problemToOpen) {
+      openedFromUrl.current = null;
+      return;
+    }
+
+    if (openedFromUrl.current === problemToOpen) return;
+
+    if (problemToOpen !== selectedProblemId && problems.some((problem) => problem.id === problemToOpen)) {
+      openedFromUrl.current = problemToOpen;
       selectProblem(problemToOpen);
     }
   }, [problemToOpen, problems, selectedProblemId, selectProblem]);
