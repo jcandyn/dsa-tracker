@@ -1,4 +1,4 @@
-import { STATUS, STATUS_DISPLAY, type Status } from "@/constants";
+import { STATUS, STATUS_DISPLAY, STATUS_LABELS, type Status } from "@/constants";
 import { useProblemStore } from "@/store/problemStore";
 
 interface Props {
@@ -6,35 +6,32 @@ interface Props {
   status: Status;
 }
 
-const order: Status[] = [
+const statusOptions = [
   STATUS.NOT_STARTED,
-  STATUS.SOLVED,
-  STATUS.REVIEW,
   STATUS.PRACTICING,
+  STATUS.REVIEW,
+  STATUS.SOLVED,
   STATUS.STUCK,
-];
+] as const;
 
 const StatusBadge = ({ id, status }: Props) => {
-  const updateStatus = useProblemStore(
-    (state) => state.updateStatus
-  );
-
-  const handleClick = () => {
-    const current = order.indexOf(status);
-    const next = order[(current + 1) % order.length];
-
-    updateStatus(id, next);
-  };
+  const updateStatus = useProblemStore((state) => state.updateStatus);
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className="text-2xl transition hover:scale-125"
-      title={status}
-    >
-      {STATUS_DISPLAY[status]}
-    </button>
+    <div className="flex items-center gap-2">
+      <span className="text-2xl" aria-label={STATUS_LABELS[status]} title={STATUS_LABELS[status]}>
+        {STATUS_DISPLAY[status]}
+      </span>
+      <label className="sr-only" htmlFor={`status-${id}`}>Status</label>
+      <select
+        id={`status-${id}`}
+        value={status}
+        onChange={(event) => updateStatus(id, event.target.value as Status)}
+        className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs text-slate-700 outline-none focus:border-sky-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+      >
+        {statusOptions.map((option) => <option key={option} value={option}>{STATUS_LABELS[option]}</option>)}
+      </select>
+    </div>
   );
 };
 
