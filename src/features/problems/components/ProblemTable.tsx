@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 import { useProblemStore } from "@/store/problemStore";
 import { useSettingsStore } from "@/store/settingsStore";
 
@@ -38,7 +39,7 @@ const ProblemTable = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3"><FilterBar value={courseSet} onChange={(value) => { setCourseSet(value); setPage(1); }} /><label className="flex items-center gap-2 text-sm text-slate-300">Sort<select value={sort} onChange={(event) => { setSort(event.target.value as typeof sort); setPage(1); }} className="rounded-lg border border-slate-700 bg-slate-900 py-2 pl-3 pr-10 text-white"><option value="title">Title</option><option value="difficulty-asc">Difficulty: Easy first</option><option value="difficulty-desc">Difficulty: Hard first</option></select></label></div>
+      <div className="flex flex-wrap items-center justify-between gap-3"><FilterBar value={courseSet} onChange={(value) => { setCourseSet(value); setPage(1); }} /><label className="flex items-center gap-2 text-sm text-slate-300">Sort<div className="relative"><select value={sort} onChange={(event) => { setSort(event.target.value as typeof sort); setPage(1); }} className="appearance-none rounded-lg border border-slate-700 bg-slate-900 py-2 pl-3 pr-12 text-white"><option value="title">Title</option><option value="difficulty-asc">Difficulty: Easy first</option><option value="difficulty-desc">Difficulty: Hard first</option></select><ChevronDown aria-hidden size={16} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" /></div></label></div>
 
       {query && <p className="text-sm text-slate-400">Showing {filteredProblems.length} result{filteredProblems.length === 1 ? "" : "s"} for “{query}”.</p>}
 
