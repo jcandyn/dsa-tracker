@@ -1,4 +1,5 @@
 import { useProblemStore } from "@/store/problemStore";
+import { useSearchParams } from "react-router-dom";
 import { STATUS } from "@/constants";
 
 import HintPanel from "./HintPanel";
@@ -30,6 +31,16 @@ const ProblemDrawer = () => {
     (state) => state.completeReview
   );
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const closeDrawer = () => {
+    selectProblem(null);
+    if (searchParams.has("open")) {
+      const nextParams = new URLSearchParams(searchParams);
+      nextParams.delete("open");
+      setSearchParams(nextParams, { replace: true });
+    }
+  };
+
   const problem = problems.find(
     (p) => p.id === selectedProblemId
   );
@@ -39,7 +50,7 @@ const ProblemDrawer = () => {
   return (
     <>
       <div
-        onClick={() => selectProblem(null)}
+        onClick={closeDrawer}
         className="fixed inset-0 z-40 bg-black/40"
       />
 
@@ -64,7 +75,7 @@ const ProblemDrawer = () => {
             </div>
 
             <button
-              onClick={() => selectProblem(null)}
+              onClick={closeDrawer}
               className="rounded-lg p-2 transition hover:bg-slate-800"
             >
               ✕
