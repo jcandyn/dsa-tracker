@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import GamificationCelebration from "../common/GamificationCelebration";
 
 const AppLayout = () => {
   return (
@@ -15,6 +16,7 @@ const AppLayout = () => {
           <Outlet />
         </main>
       </div>
+      <GamificationCelebration />
     </div>
   );
 };
