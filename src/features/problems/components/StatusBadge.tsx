@@ -1,5 +1,6 @@
 import { STATUS, STATUS_DISPLAY, STATUS_LABELS, type Status } from "@/constants";
 import { useProblemStore } from "@/store/problemStore";
+import { ChevronDown } from "lucide-react";
 
 interface Props {
   id: string;
@@ -23,14 +24,17 @@ const StatusBadge = ({ id, status }: Props) => {
         {STATUS_DISPLAY[status]}
       </span>
       <label className="sr-only" htmlFor={`status-${id}`}>Status</label>
-      <select
-        id={`status-${id}`}
-        value={status}
-        onChange={(event) => updateStatus(id, event.target.value as Status)}
-        className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs text-slate-700 outline-none focus:border-sky-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-      >
-        {statusOptions.map((option) => <option key={option} value={option}>{STATUS_LABELS[option]}</option>)}
-      </select>
+      <div className="relative">
+        <select
+          id={`status-${id}`}
+          value={status}
+          onChange={(event) => updateStatus(id, event.target.value as Status)}
+          className="appearance-none rounded-md border border-slate-300 bg-white py-1 pl-2 pr-11 text-xs text-slate-700 outline-none focus:border-sky-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+        >
+          {statusOptions.map((option) => <option key={option} value={option}>{STATUS_LABELS[option]}</option>)}
+        </select>
+        <ChevronDown aria-hidden size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" />
+      </div>
     </div>
   );
 };
