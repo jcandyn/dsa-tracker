@@ -14,6 +14,7 @@ const ProblemsPage = () => {
 
   useEffect(() => {
     if (!problemToOpen) {
+      if (openedFromUrl.current) selectProblem(null);
       openedFromUrl.current = null;
       return;
     }
