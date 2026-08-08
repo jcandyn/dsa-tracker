@@ -1,5 +1,6 @@
 import { useProblemStore } from "@/store/problemStore";
 import { useSearchParams } from "react-router-dom";
+import { X } from "lucide-react";
 import { STATUS } from "@/constants";
 
 import HintPanel from "./HintPanel";
@@ -75,10 +76,13 @@ const ProblemDrawer = () => {
             </div>
 
             <button
+              type="button"
+              aria-label="Close problem details"
               onClick={closeDrawer}
-              className="rounded-lg p-2 transition hover:bg-slate-800"
+              className="rounded-lg p-2 text-[0px] text-slate-900 transition hover:bg-slate-200 dark:text-white dark:hover:bg-slate-800"
             >
               ✕
+              <X size={24} strokeWidth={2.25} />
             </button>
 
           </div>
