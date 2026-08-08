@@ -33,7 +33,7 @@ const FilterBar = ({ value, onChange }: Props) => (
       id="course-set-filter"
       value={value}
       onChange={(event) => onChange(event.target.value)}
-      className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white outline-none focus:border-sky-500"
+      className="rounded-lg border border-slate-700 bg-slate-900 py-2 pl-3 pr-10 text-sm text-white outline-none focus:border-sky-500"
     >
       {COURSE_SET_FILTERS.map((filter) => (
         <option key={filter.id} value={filter.id}>
