@@ -84,10 +84,12 @@ export const useProblemStore = create<ProblemStore>()(persist((set) => ({
     set((state) => ({
       ...(() => {
         const current = state.problems.find((problem) => problem.id === id);
-        const earnedXp = status === "solved" && current?.status !== "solved" ? current?.difficulty === "Hard" ? 50 : current?.difficulty === "Medium" ? 30 : 20 : 0;
+        // Completion XP is a one-time reward. A solved problem can later be
+        // marked for review or practice without becoming eligible again.
+        const earnedXp = status === "solved" && !current?.completed ? current?.difficulty === "Hard" ? 50 : current?.difficulty === "Medium" ? 30 : 20 : 0;
         return {
           activity: earnedXp ? [...state.activity, { date: new Date().toISOString(), type: "solve" as const, xp: earnedXp }].slice(-365) : state.activity,
-          problems: state.problems.map((problem) => problem.id === id ? { ...problem, status, completed: status === "solved", updatedAt: new Date().toISOString() } : problem),
+          problems: state.problems.map((problem) => problem.id === id ? { ...problem, status, completed: problem.completed || status === "solved", updatedAt: new Date().toISOString() } : problem),
         };
       })(),
     })),
