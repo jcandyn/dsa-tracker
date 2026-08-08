@@ -1,15 +1,30 @@
-const SettingsPage = () => {
-  return (
-    <div className="space-y-6">
-      <h1 className="text-4xl font-bold">
-        ⚙️ Settings
-      </h1>
+import type { ChangeEvent } from "react";
+import { useProblemStore } from "@/store/problemStore";
+import { useSettingsStore, type Theme } from "@/store/settingsStore";
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
-        Settings will be added here.
-      </div>
+const SettingsPage = () => {
+  const settings = useSettingsStore();
+  const problems = useProblemStore((state) => state.problems);
+  const activity = useProblemStore((state) => state.activity);
+  const updateSettings = settings.updateSettings;
+  const exportData = () => {
+    const blob = new Blob([JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), problemState: { problems, activity }, settings: { ...settings, updateSettings: undefined } }, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = "dsa-tracker-backup.json"; link.click(); URL.revokeObjectURL(url);
+  };
+  const importData = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; if (!file) return;
+    const reader = new FileReader(); reader.onload = () => { try { const backup = JSON.parse(String(reader.result)); if (!backup.problemState?.problems || !backup.settings) throw new Error("Invalid backup"); localStorage.setItem("dsa-tracker-problems", JSON.stringify({ state: backup.problemState, version: 0 })); localStorage.setItem("dsa-tracker-settings", JSON.stringify({ state: backup.settings, version: 0 })); window.location.reload(); } catch { window.alert("That file is not a valid DSA Tracker backup."); } }; reader.readAsText(file);
+  };
+  const resetData = () => { if (window.confirm("Reset all local progress and settings? This cannot be undone without an export.")) { localStorage.removeItem("dsa-tracker-problems"); localStorage.removeItem("dsa-tracker-settings"); window.location.reload(); } };
+
+  return <div className="space-y-6"><div><h1 className="text-4xl font-bold">Settings</h1><p className="mt-2 text-slate-400">Personalize your study plan and safeguard your local progress.</p></div>
+    <div className="grid gap-6 lg:grid-cols-2">
+      <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-semibold">Appearance & accessibility</h2><div className="mt-5 space-y-5"><label className="block text-sm">Theme<select value={settings.theme} onChange={(event) => updateSettings({ theme: event.target.value as Theme })} className="mt-2 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2"><option value="system">System default</option><option value="light">Light</option><option value="dark">Dark</option></select></label><label className="flex items-center justify-between gap-4"><span><strong>Reduced motion</strong><small className="mt-1 block text-slate-400">Minimize celebrations and transitions.</small></span><input type="checkbox" checked={settings.reducedMotion} onChange={(event) => updateSettings({ reducedMotion: event.target.checked })} /></label><label className="flex items-center justify-between gap-4"><span><strong>Compact problem table</strong><small className="mt-1 block text-slate-400">Show more problems per screen.</small></span><input type="checkbox" checked={settings.compactTable} onChange={(event) => updateSettings({ compactTable: event.target.checked })} /></label></div></section>
+      <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-semibold">Goals & reminders</h2><div className="mt-5 space-y-5"><label className="block text-sm">Daily solve goal<input type="number" min="1" max="20" value={settings.dailySolveGoal} onChange={(event) => updateSettings({ dailySolveGoal: Math.max(1, Number(event.target.value)) })} className="mt-2 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2" /></label><label className="block text-sm">Daily review goal<input type="number" min="1" max="30" value={settings.dailyReviewGoal} onChange={(event) => updateSettings({ dailyReviewGoal: Math.max(1, Number(event.target.value)) })} className="mt-2 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2" /></label><label className="flex items-center justify-between gap-4"><span><strong>Review notifications</strong><small className="mt-1 block text-slate-400">Show the due-review count in the navbar.</small></span><input type="checkbox" checked={settings.reviewNotifications} onChange={(event) => updateSettings({ reviewNotifications: event.target.checked })} /></label></div></section>
+      <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-semibold">Spaced repetition</h2><p className="mt-2 text-sm text-slate-400">Set review intervals in days. Each successful review advances to the next interval.</p><input value={settings.reviewIntervals.join(", ")} onChange={(event) => { const intervals = event.target.value.split(",").map(Number).filter((value) => Number.isFinite(value) && value > 0).sort((a, b) => a - b); if (intervals.length) updateSettings({ reviewIntervals: intervals }); }} className="mt-4 w-full rounded-lg border border-slate-700 bg-slate-950 p-2" aria-label="Review intervals in days" /></section>
+      <section className="rounded-xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-semibold">Your data</h2><p className="mt-2 text-sm text-slate-400">Progress is stored only in this browser. Export a backup before clearing site data or switching devices.</p><div className="mt-5 flex flex-wrap gap-3"><button type="button" onClick={exportData} className="rounded-lg bg-sky-100 px-4 py-2 font-medium text-sky-700 hover:bg-sky-200 dark:bg-sky-500 dark:text-white">Export backup</button><label className="cursor-pointer rounded-lg border border-slate-700 px-4 py-2 font-medium hover:bg-slate-800"><input type="file" accept="application/json" onChange={importData} className="hidden" />Import backup</label><button type="button" onClick={resetData} className="rounded-lg border border-red-400/50 px-4 py-2 font-medium text-red-500 hover:bg-red-500/10">Reset progress</button></div></section>
     </div>
-  );
+  </div>;
 };
 
 export default SettingsPage;
