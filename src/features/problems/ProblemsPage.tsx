@@ -1,9 +1,21 @@
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useProblemStore } from "@/store/problemStore";
 import ProblemDrawer from "./components/ProblemDrawer";
 import ProblemTable from "./components/ProblemTable";
 
 const ProblemsPage = () => {
   const problems = useProblemStore((state) => state.problems);
+  const selectedProblemId = useProblemStore((state) => state.selectedProblemId);
+  const selectProblem = useProblemStore((state) => state.selectProblem);
+  const [searchParams] = useSearchParams();
+  const problemToOpen = searchParams.get("open");
+
+  useEffect(() => {
+    if (problemToOpen && problemToOpen !== selectedProblemId && problems.some((problem) => problem.id === problemToOpen)) {
+      selectProblem(problemToOpen);
+    }
+  }, [problemToOpen, problems, selectedProblemId, selectProblem]);
 
   return (
     <div className="space-y-8">
