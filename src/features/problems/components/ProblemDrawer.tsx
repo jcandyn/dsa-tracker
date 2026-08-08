@@ -111,7 +111,7 @@ const ProblemDrawer = () => {
 
           <LearningPanel topicId={problem.topic.id} topicLabel={problem.topic.label} />
 
-          <LearningResources title={problem.title} url={problem.url} />
+          <LearningResources title={problem.title} />
 
           {/* Hints */}
 

@@ -1,18 +1,18 @@
-import { BookOpen, ExternalLink, MessageSquare, PlayCircle } from "lucide-react";
+import { ExternalLink, MessageSquare, PlayCircle } from "lucide-react";
 
 interface Props {
   title: string;
-  url: string;
 }
 
-const LearningResources = ({ title, url }: Props) => {
-  const problemUrl = url.endsWith("/") ? url : `${url}/`;
+const LearningResources = ({ title }: Props) => {
   const query = encodeURIComponent(`${title} LeetCode walkthrough explanation`);
-  const discussionQuery = encodeURIComponent(title);
+  const writtenGuideQuery = encodeURIComponent(`${title} LeetCode solution site:geeksforgeeks.org`);
+  // LeetCode's public Discuss page currently ignores search terms supplied in its
+  // URL. A site-restricted search reliably lands on discussions for this problem.
+  const discussionQuery = encodeURIComponent(`site:leetcode.com/discuss ${title}`);
   const resources = [
-    { label: "Problem statement", description: "Re-read constraints and examples.", href: problemUrl, icon: BookOpen },
-    { label: "Official editorial", description: "Study the intended solution approach.", href: `${problemUrl}editorial/`, icon: ExternalLink },
-    { label: "Community discussion", description: "Compare alternative explanations.", href: `https://leetcode.com/discuss/?currentPage=1&orderBy=most_relevant&query=${discussionQuery}`, icon: MessageSquare },
+    { label: "Free solution guides", description: "Read free written explanations and code.", href: `https://www.google.com/search?q=${writtenGuideQuery}`, icon: ExternalLink },
+    { label: "LeetCode discussions", description: "Find problem-specific community explanations.", href: `https://www.google.com/search?q=${discussionQuery}`, icon: MessageSquare },
     { label: "Video walkthroughs", description: "Search YouTube for visual explanations.", href: `https://www.youtube.com/results?search_query=${query}`, icon: PlayCircle },
   ];
 
