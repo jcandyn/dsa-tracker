@@ -56,13 +56,13 @@ const HintPanel = ({
                 {hint}
               </p>
             ) : (
-              <button
+                <button
                 disabled={step !== index}
                 onClick={reveal}
-                className={`rounded-lg px-4 py-2 text-sm transition ${
-                  step === index
-                    ? "bg-blue-600 hover:bg-blue-500"
-                    : "cursor-not-allowed bg-slate-800 text-slate-500"
+                  className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                    step === index
+                    ? "bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500"
+                    : "cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500"
                 }`}
               >
                 Reveal Hint
@@ -100,10 +100,10 @@ const HintPanel = ({
             <button
               disabled={step !== hints.length}
               onClick={reveal}
-              className={`rounded-lg px-4 py-2 text-sm transition ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 step === hints.length
-                  ? "bg-blue-600 hover:bg-blue-500"
-                  : "cursor-not-allowed bg-slate-800 text-slate-500"
+                  ? "bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500"
+                  : "cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500"
               }`}
             >
               Reveal Pattern
@@ -156,10 +156,10 @@ const HintPanel = ({
             <button
               disabled={step !== hints.length + 1}
               onClick={reveal}
-              className={`rounded-lg px-4 py-2 text-sm transition ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 step === hints.length + 1
-                  ? "bg-blue-600 hover:bg-blue-500"
-                  : "cursor-not-allowed bg-slate-800 text-slate-500"
+                  ? "bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500"
+                  : "cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500"
               }`}
             >
               Reveal Complexity

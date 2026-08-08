@@ -6,6 +6,7 @@ import ConfidenceStars from "./ConfidenceStars";
 import DifficultyBadge from "./DifficultyBadge";
 import StatusBadge from "./StatusBadge";
 import NotesEditor from "./NotesEditor";
+import LearningPanel from "./LearningPanel";
 
 const ProblemDrawer = () => {
   const selectedProblemId = useProblemStore(
@@ -107,6 +108,8 @@ const ProblemDrawer = () => {
 
           </section>
 
+          <LearningPanel topicId={problem.topic.id} topicLabel={problem.topic.label} />
+
           {/* Hints */}
 
           <HintPanel
@@ -171,7 +174,7 @@ const ProblemDrawer = () => {
             href={problem.url}
             target="_blank"
             rel="noreferrer"
-            className="flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-500"
+            className="flex w-full items-center justify-center rounded-xl bg-sky-100 px-4 py-3 font-semibold text-sky-700 transition hover:bg-sky-200 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500"
           >
             Solve on LeetCode ↗
           </a>
