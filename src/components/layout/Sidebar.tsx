@@ -4,6 +4,7 @@ import {
   Brain,
   BarChart3,
   Award,
+  BookOpen,
   Settings,
 } from "lucide-react";
 
@@ -41,6 +42,10 @@ const Sidebar = () => {
 
         <NavItem to="/badges" icon={Award}>
           Badges
+        </NavItem>
+
+        <NavItem to="/guide" icon={BookOpen}>
+          Interview guide
         </NavItem>
 
         <NavItem to="/settings" icon={Settings}>
